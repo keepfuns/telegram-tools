@@ -40,7 +40,7 @@
    sources:
       - 
          enabled: true # 是否启用监控
-         id: -100529759275 # 频道ID/机器ID/用户ID，转发消息至@getidsbot可获取
+         id: -100529759275 # 频道ID/机器ID/群组ID/用户名
          include_keywords: # 包含关键词（空则接收所有）
             - 重要
             - 通知
@@ -49,7 +49,7 @@
             - 推广
       - 
          enabled: true # 是否启用监控
-         id: 2426465634 # 频道ID/机器ID/用户ID，转发消息至@getidsbot可获取
+         id: 2426465634 # 频道ID/机器ID/群组ID/用户名
          include_keywords: # 包含关键词（空则接收所有）
             - 重要
             - 通知
@@ -60,10 +60,10 @@
    destinations:
       - 
          enabled: true # 是否启用转发
-         id: -100529759276 # 频道ID/机器ID/用户ID，转发消息至@getidsbot可获取
+         id: -100529759276 # 频道ID/机器ID/群组ID/用户名
       - 
          enabled: true # 是否启用转发
-         id: 2426465646 # 频道ID/机器ID/用户ID，转发消息至@getidsbot可获取
+         id: yonghuming # 频道ID/机器ID/群组ID/用户名
    ```
 
 3. **重启**：
