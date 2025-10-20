@@ -72,8 +72,8 @@
    ```
 
 4. **生成Session文件**：
-   - Telegram认证，需输入`phone_number、login_code`
-   - 其中phone_number需要带`+`号，如`+86`
+   - Telegram认证，需输入`手机号`、`验证码`
+   - 其中`手机号`需要带`+`号，如`+86`
    ```bash
    docker exec -it telegram-message-forward python /app/src/login.py
    ```
