@@ -4,10 +4,10 @@
 ## 运行步骤
 1. **获取Telegram API凭证**：
    - 访问 [my.telegram.org](https://my.telegram.org)
-   - 登录你的 Telegram 账号
-   - 进入 "API Development Tools"
+   - 登录你的 `Telegram` 账号
+   - 进入 `API Development Tools`
    - 创建新的应用程序，获取 `api_id` 和 `api_hash`
-   - `+86`手机号代申请api请联系 [拾光者](https://t.me/KeepfunsChatBot)
+   - `+86` 手机号代申请api请联系 [拾光者](https://t.me/KeepfunsChatBot)
 
 2. **Docker运行**：
    ```bash
@@ -73,8 +73,8 @@
    ```
 
 4. **生成Session文件**：
-   - Telegram认证，需输入`手机号`、`验证码`
-   - 其中`手机号`需要带`+`号，如`+86`
+   - Telegram认证，需输入 `手机号` 、 `验证码`
+   - 其中 `手机号` 需要带 `+` 号，如 `+86`
    ```bash
    docker exec -it telegram-message-forward python /app/src/login.py
    ```
@@ -89,7 +89,7 @@
 2. **灵活配置**：配置ID、名称、用户名等任一皆可匹配到频道、群组、机器、用户
 3. **灵活规则**：每个源可以设置独立的包含和排除关键词
 4. **原文转发**：消息保持原文转发，包括文本、图片、媒体、链接、按钮等
-5. **禁止转发**：支持转发`已关闭转发功能`的频道消息（但不转发按钮）
+5. **禁止转发**：支持转发 `已关闭转发功能` 的频道消息（但不转发按钮）
 
 ## 免责声明
 - 本项目完全免费，仅限个人学习、研究和非商业用途
