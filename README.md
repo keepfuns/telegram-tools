@@ -7,6 +7,7 @@
    - 登录你的 Telegram 账号
    - 进入 "API Development Tools"
    - 创建新的应用程序，获取 `api_id` 和 `api_hash`
+   - `+86`手机号代申请api请联系`https://t.me/KeepfunsChatBot`
 
 2. **Docker运行**：
    ```bash
