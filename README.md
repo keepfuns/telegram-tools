@@ -1,5 +1,16 @@
 ## 简介
-   Telegram消息多对多转发工具
+   `Telegram工具`
+
+## 主要功能
+### 多对多转发
+- 可以同时监控多个频道/群组/机器/用户，并转发到多个频道/群组/机器/用户
+- 配置`ID`、`名称`、`用户名`等任一皆可匹配到频道、群组、机器、用户
+- 每个源可以设置独立的`包含`和`排除`关键词
+- 消息保持原文转发，包括文本、图片、媒体、链接、按钮等
+- 支持转发 `已关闭转发功能` 的频道消息（但不转发按钮）
+### 定时发送
+- cron格式时间，如每天2点 `0 2 * * *`
+- 仅支持文本发送
 
 ## 运行步骤
 1. **获取Telegram API凭证**：
@@ -28,7 +39,6 @@
    telegram:
       api_id: api_id # 从 my.telegram.org 获取
       api_hash: api_hash # 从 my.telegram.org 获取
-      username: telegram # 监控账号用户名
 
    proxy:
       enable: true # 是否启用代理
@@ -40,7 +50,7 @@
 
    sources:
       - 
-         enabled: true # 是否启用监控
+         enabled: true # 是否启用监控来源
          id: 频道通知 # ID/名称/用户名
          include_keywords: # 包含关键词（空则接收所有）
             - 重要
@@ -49,7 +59,7 @@
             - 广告
             - 推广
       - 
-         enabled: true # 是否启用监控
+         enabled: true # 是否启用监控来源
          id: mybot # ID/名称/用户名
          include_keywords: # 包含关键词（空则接收所有）
             - 重要
@@ -60,11 +70,23 @@
 
    destinations:
       - 
-         enabled: true # 是否启用转发
+         enabled: true # 是否启用转发目标
          id: -100529759276 # ID/名称/用户名
       - 
-         enabled: true # 是否启用转发
+         enabled: true # 是否启用转发目标
          id: yonghuming # ID/名称/用户名
+
+   schedulers:
+      - 
+         enabled: true # 是否启用定时任务
+         id: -100529759276 # ID/名称/用户名
+         cron: 0 2 * * * # 指定时间
+         message: 签到 # 发送信息内容
+      - 
+         enabled: true # 是否启用定时任务
+         id: yonghuming # ID/名称/用户名
+         cron: 30 6 * * * # 指定时间
+         message: 下班通知 # 发送信息内容
    ```
 
 3. **重启**：
@@ -83,13 +105,6 @@
    ```bash
    docker restart telegram-message-forward
    ```
-
-## 主要特点
-1. **多源多目标**：可以同时监控多个频道/群组/机器/用户，并转发到多个频道/群组/机器/用户
-2. **灵活配置**：配置ID、名称、用户名等任一皆可匹配到频道、群组、机器、用户
-3. **灵活规则**：每个源可以设置独立的包含和排除关键词
-4. **原文转发**：消息保持原文转发，包括文本、图片、媒体、链接、按钮等
-5. **禁止转发**：支持转发 `已关闭转发功能` 的频道消息（但不转发按钮）
 
 ## 免责声明
 - 本项目完全免费，仅限个人学习、研究和非商业用途
