@@ -18,6 +18,7 @@ ENV TZ=Asia/Shanghai
 
 # 挂载路径（在运行容器时通过 -v 参数挂载）
 VOLUME /app/data
+VOLUME /app/log
 
 # 运行应用
 CMD ["python", "main.py"]

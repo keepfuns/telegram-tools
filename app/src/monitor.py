@@ -12,7 +12,7 @@ class TelegramMonitor:
     def __init__(self, config: Dict[str, Any]):
         self.config = config
 
-    async def start(self, client_manage: client.ClientManage):
+    async def start_monitor(self, client_manage: client.ClientManage):
         """开始监控"""
         # 检查是否有启用的源和目标
         enabled_sources = [
@@ -28,7 +28,7 @@ class TelegramMonitor:
         # 获取源实体
         sources = self.config.get("sources", [])
         enabled_sources = [s for s in sources if s.get("enabled", False)]
-        logger.info(f"📡 配置的来源数量: {len(enabled_sources)}/{len(sources)}")
+        logger.info(f"📡 来源数量: {len(enabled_sources)}/{len(sources)}")
         source_entities = await client_manage.resolve_entities(enabled_sources)
         valid_sources = [s for s in source_entities if s["entity"] is not None]
 
@@ -37,7 +37,7 @@ class TelegramMonitor:
             return
 
         # 显示监控配置
-        logger.info(f"📡 开始监控 {len(valid_sources)} 个源")
+        logger.info(f"📡 开始监控 {len(valid_sources)} 个来源")
         for source in valid_sources:
             source_config = next(
                 (s for s in enabled_sources if s["id"] == source["id"]), {}
@@ -51,9 +51,7 @@ class TelegramMonitor:
         # 获取目标实体
         destinations = self.config.get("destinations", [])
         enabled_destinations = [d for d in destinations if d.get("enabled", False)]
-        logger.info(
-            f"🎯 配置的目标数量: {len(enabled_destinations)}/{len(destinations)}"
-        )
+        logger.info(f"🎯 目标数量: {len(enabled_destinations)}/{len(destinations)}")
         destination_entities = await client_manage.resolve_entities(
             enabled_destinations
         )
@@ -66,7 +64,7 @@ class TelegramMonitor:
             return
 
         # 显示目标配置
-        logger.info(f"🎯 转发到 {len(valid_destinations)} 个目标")
+        logger.info(f"🎯 开始转发 {len(valid_destinations)} 个目标")
         for dest in valid_destinations:
             logger.info(f"   - {dest['name']} (ID: {dest['id']})")
 

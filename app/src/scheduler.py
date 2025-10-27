@@ -36,7 +36,6 @@ class TelegramScheduler:
             task_count = 0
             for scheduler in enabled_schedulers:
                 try:
-                    logger.info(scheduler)
                     trigger = CronTrigger.from_crontab(scheduler["cron"])
                     self.scheduler.add_job(
                         self.send_message,
