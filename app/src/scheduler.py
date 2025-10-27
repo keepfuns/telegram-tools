@@ -21,7 +21,7 @@ class TelegramScheduler:
             s for s in self.config.get("schedulers", []) if s.get("enabled", False)
         ]
         if not enabled_schedulers:
-            logger.warning("🚨 没有启用的定时，关闭定时功能")
+            logger.warning("⚠️ 没有启用的定时任务，关闭定时功能")
             return
 
         # 获取定时实体

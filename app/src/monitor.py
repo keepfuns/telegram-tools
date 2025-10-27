@@ -22,7 +22,7 @@ class TelegramMonitor:
             d for d in self.config.get("destinations", []) if d.get("enabled", False)
         ]
         if not enabled_sources and not enabled_destinations:
-            logger.warning("🚨 没有启用的来源和目标，关闭转发功能")
+            logger.warning("⚠️ 没有启用的来源和目标，关闭转发功能")
             return
 
         # 获取源实体
@@ -92,7 +92,7 @@ class TelegramMonitor:
                 )
                 if not source_config:
                     logger.warning(
-                        f"🚨 收到未知源的消息: {source_name} (ID: {source_id})"
+                        f"⚠️ 收到未知源的消息: {source_name} (ID: {source_id})"
                     )
                     return
 

@@ -126,7 +126,7 @@ async def generate_session_file():
         # 检查session文件是否生成
         if os.path.exists(SESSION_FILE):
             print(f"\n📁 Session文件已生成: {SESSION_FILE}")
-            print("\n🚨  重要提示:")
+            print("\n⚠️  重要提示:")
             print("   - 请妥善保管.session文件，不要分享给他人")
             print("   - 此文件具有账户的完全访问权限")
         else:

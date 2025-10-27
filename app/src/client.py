@@ -53,7 +53,7 @@ class ClientManage:
         # 支持的代理类型
         valid_types = ["http", "socks4", "socks5", "mtproto"]
         if proxy_type not in valid_types:
-            logger.warning(f"🚨 不支持的代理类型: {proxy_type}，使用默认的http代理")
+            logger.warning(f"⚠️ 不支持的代理类型: {proxy_type}，使用默认的http代理")
             proxy_type = "http"
 
         proxy_dict = {
