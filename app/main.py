@@ -21,22 +21,27 @@ async def app():
         client_manage = None
         telegram_scheduler = None
 
-        client_manage = client.ClientManage(config)
-        await client_manage.init_client()
-
         try:
+            client_manage = client.ClientManage(config)
+            await client_manage.init_client()
+
             # 启动监控
             telegram_monitor = monitor.TelegramMonitor(config)
             await telegram_monitor.start_monitor(client_manage)
-        except Exception as e:
-            logger.error(f"❌ 监控转发功能错误: {e}")
 
-        try:
             # 启动定时
             telegram_scheduler = scheduler.TelegramScheduler(config)
             await telegram_scheduler.start_scheduler(client_manage)
+
+            await client_manage.client.run_until_disconnected()
         except Exception as e:
-            logger.error(f"❌ 定时发送功能错误: {e}")
+            logger.error(f"❌ 程序运行出错: {e}")
+        finally:
+            if client_manage and client_manage.client.is_connected():
+                await client_manage.client.disconnect()
+            if telegram_scheduler and telegram_scheduler.scheduler.running:
+                telegram_scheduler.scheduler.shutdown()
+            logger.info("⏹️ Telegram-Tools系统已停止")
 
 
 if __name__ == "__main__":

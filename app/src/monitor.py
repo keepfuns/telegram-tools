@@ -22,7 +22,7 @@ class TelegramMonitor:
             d for d in self.config.get("destinations", []) if d.get("enabled", False)
         ]
         if not enabled_sources and not enabled_destinations:
-            logger.warning("⚠️ 没有启用的来源和目标，关闭转发功能")
+            logger.warning("🚨 没有启用的来源和目标，关闭转发功能")
             return
 
         # 获取源实体
@@ -69,9 +69,9 @@ class TelegramMonitor:
             logger.info(f"   - {dest['name']} (ID: {dest['id']})")
 
         # 创建消息处理器
-        client = client_manage.client
-
-        @client.on(events.NewMessage(chats=[s["entity"] for s in valid_sources]))
+        @client_manage.client.on(
+            events.NewMessage(chats=[s["entity"] for s in valid_sources])
+        )
         async def handler(event):
             try:
                 # 获取消息信息
@@ -91,7 +91,9 @@ class TelegramMonitor:
                     {},
                 )
                 if not source_config:
-                    logger.warning(f"收到未知源的消息: {source_name} (ID: {source_id})")
+                    logger.warning(
+                        f"🚨 收到未知源的消息: {source_name} (ID: {source_id})"
+                    )
                     return
 
                 # 应用关键词过滤（只对文本内容过滤）
@@ -103,12 +105,12 @@ class TelegramMonitor:
                         event, valid_destinations
                     )
                 else:
-                    logger.debug(f"[{source_name}] 消息不匹配关键词")
+                    logger.debug(f"❗ [{source_name}] 消息关键词不匹配")
 
             except Exception as e:
-                logger.error(f"处理消息时出错: {e}")
+                logger.error(f"❌ 处理消息时出错: {e}")
 
-        logger.info("✅ 实时监控已启动，等待新消息...")
+        logger.info("🔍 实时监控转发已启动，等待新消息...")
 
     def message_filter(self, text: str, source_config: Dict[str, Any]) -> bool:
         """消息过滤"""

@@ -179,7 +179,7 @@ class ConfigManager:
                 yaml.dump(default_config, f)
 
             logger.info(f"📝 已创建带详细注释的默认配置文件: {CONFIG_FILE}")
-            logger.info("⚠️  请编辑配置文件后重启")
+            logger.warning("🚨  请编辑配置文件后重启")
             sys.exit(0)
 
     @staticmethod
@@ -304,8 +304,8 @@ class ConfigManager:
         # 检查session文件
         if not os.path.exists(SESSION_FILE):
             logger.error(f"❌ Session文件不存在: {SESSION_FILE}")
-            logger.error(
-                "请终端运行 docker exec -it telegram-tools python /app/src/login.py 生成Session文件"
+            logger.warning(
+                "🚨 请终端运行 docker exec -it telegram-tools python /app/src/login.py 生成Session文件"
             )
             time.sleep(3600)
             return False

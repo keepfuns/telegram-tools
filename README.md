@@ -2,38 +2,37 @@
    `Telegram工具`
 
 ## 主要功能
-### 多对多转发
+### 📌多对多转发
 - 可以同时监控多个频道/群组/机器/用户，并转发到多个频道/群组/机器/用户
 - 配置`ID`、`名称`、`用户名`等任一皆可匹配到频道、群组、机器、用户
 - 每个源可以设置独立的`包含`和`排除`关键词
 - 消息保持原文转发，包括文本、图片、媒体、链接、按钮等
 - 支持转发 `已关闭转发功能` 的频道消息（但不转发按钮）
-### 定时发送
+### 📌定时发送
 - cron格式时间，如每天2点 `0 2 * * *`
 - 仅支持文本发送
 
 ## 运行步骤
-1. **获取Telegram API凭证**：
+1️⃣ **获取Telegram API凭证**：
    - 访问 [my.telegram.org](https://my.telegram.org)
    - 登录你的 `Telegram` 账号
    - 进入 `API Development Tools`
    - 创建新的应用程序，获取 `api_id` 和 `api_hash`
    - `+86` 手机号代申请api请联系 [拾光者](https://t.me/KeepfunsChatBot)
 
-2. **Docker运行**：
+2️⃣ **Docker运行**：
    ```bash
    docker run -d \
-      --name telegram-message-forward \
+      --name telegram-tools \
       --network bridge \
-      -e TZ=Asia/Shanghai \
       -v <your_path>/data:/app/data \
       -v <your_path>/log:/app/log \
       --restart always \
-      keepfuns/telegram-message-forward:latest
+      keepfuns/telegram-tools:latest
    ```
    这会在 `data` 目录生成 `config.yaml` 文件。
 
-3. **编辑配置文件**：
+3️⃣ **编辑配置文件**：
    编辑 `config.yaml` 文件，配置您的源和目标，支持多源和多目标：
    ```yaml
    telegram:
@@ -80,30 +79,30 @@
       - 
          enabled: true # 是否启用定时任务
          id: -100529759276 # ID/名称/用户名
-         cron: 0 2 * * * # 指定时间
+         cron: "0 2 * * *" # 指定时间(需加双引号)
          message: 签到 # 发送信息内容
       - 
          enabled: true # 是否启用定时任务
          id: yonghuming # ID/名称/用户名
-         cron: 30 6 * * * # 指定时间
+         cron: "30 6 * * *" # 指定时间(需加双引号)
          message: 下班通知 # 发送信息内容
    ```
 
-3. **重启**：
+4️⃣ **重启**：
    ```bash
-   docker restart telegram-message-forward
+   docker restart telegram-tools
    ```
 
-4. **生成Session文件**：
+5️⃣ **生成Session文件**：
    - Telegram认证，需输入 `手机号` 、 `验证码`
    - 其中 `手机号` 需要带 `+` 号，如 `+86`
    ```bash
-   docker exec -it telegram-message-forward python /app/src/login.py
+   docker exec -it telegram-tools python /app/src/login.py
    ```
 
-5. **重启**：
+6️⃣ **重启**：
    ```bash
-   docker restart telegram-message-forward
+   docker restart telegram-tools
    ```
 
 ## 免责声明

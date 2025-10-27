@@ -69,7 +69,7 @@ async def generate_session_file():
     """生成.session文件"""
 
     print("=" * 50)
-    print("Telegram Session文件生成工具")
+    print("🧰 Telegram Session文件生成工具 🧰")
     print("=" * 50)
 
     # 加载配置
@@ -89,16 +89,16 @@ async def generate_session_file():
         api_hash = input("请输入API Hash: ").strip()
 
     if not api_id or not api_hash:
-        print("错误: API ID和API Hash不能为空")
+        print("❌ 错误: API ID和API Hash不能为空")
         return
 
     try:
         api_id = int(api_id)
     except ValueError:
-        print("错误: API ID必须是数字")
+        print("❌ 错误: API ID必须是数字")
         return
 
-    print(f"\nSession文件将保存为: {SESSION_FILE}")
+    print(f"\n📁 Session文件将保存为: {SESSION_FILE}")
 
     # 创建客户端
     client = TelegramClient(
@@ -109,13 +109,13 @@ async def generate_session_file():
     )
 
     try:
-        print("\n正在连接Telegram...")
+        print("\n🔄 正在连接Telegram...")
         await client.start()
 
         # 获取用户信息
         me = await client.get_me()
         if isinstance(me, User):
-            print("\n✅ 登录成功!")
+            print("\n📶 登录成功!")
             print(f"   用户ID: {me.id}")
             print(
                 f"   用户名: @{me.username}"
@@ -125,8 +125,8 @@ async def generate_session_file():
 
         # 检查session文件是否生成
         if os.path.exists(SESSION_FILE):
-            print(f"\n✅ Session文件已生成: {SESSION_FILE}")
-            print("\n⚠️  重要提示:")
+            print(f"\n📁 Session文件已生成: {SESSION_FILE}")
+            print("\n🚨  重要提示:")
             print("   - 请妥善保管.session文件，不要分享给他人")
             print("   - 此文件具有账户的完全访问权限")
         else:
@@ -143,9 +143,9 @@ def main():
     try:
         asyncio.run(generate_session_file())
     except KeyboardInterrupt:
-        print("\n\n用户取消操作")
+        print("\n\n↘️ 用户取消操作")
     except Exception as e:
-        print(f"程序运行出错: {e}")
+        print(f"❌ 程序运行出错: {e}")
 
 
 if __name__ == "__main__":

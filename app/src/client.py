@@ -32,7 +32,7 @@ class ClientManage:
             # 启动客户端
             await self.client.start()
             me = await self.client.get_me()
-            logger.info(f"✅ 连接成功: @{me.username} (ID: {me.id})")
+            logger.info(f"📶 连接成功: @{me.username} (ID: {me.id})")
         except Exception as e:
             logger.error(f"❌ Telegram客户端初始化失败: {e}")
             sys.exit(1)
@@ -53,7 +53,7 @@ class ClientManage:
         # 支持的代理类型
         valid_types = ["http", "socks4", "socks5", "mtproto"]
         if proxy_type not in valid_types:
-            logger.warning(f"不支持的代理类型: {proxy_type}，使用默认的http代理")
+            logger.warning(f"🚨 不支持的代理类型: {proxy_type}，使用默认的http代理")
             proxy_type = "http"
 
         proxy_dict = {
