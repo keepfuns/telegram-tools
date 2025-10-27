@@ -2,7 +2,7 @@ import logging
 import os
 from typing import Dict, Any
 import sys
-import asyncio
+import time
 
 # 导入 ruamel.yaml
 from ruamel.yaml import YAML
@@ -273,7 +273,7 @@ class ConfigManager:
                 existing[key] = value
 
     @staticmethod
-    async def validate_config(config: Dict[str, Any]) -> bool:
+    def validate_config(config: Dict[str, Any]) -> bool:
         """验证配置文件的必需字段"""
         required_fields = {
             "telegram": ["api_id", "api_hash"],
@@ -305,9 +305,9 @@ class ConfigManager:
         if not os.path.exists(SESSION_FILE):
             logger.error(f"❌ Session文件不存在: {SESSION_FILE}")
             logger.error(
-                "请终端运行 docker exec -it telegram-message-forward python /app/src/login.py 生成Session文件"
+                "请终端运行 docker exec -it telegram-tools python /app/src/login.py 生成Session文件"
             )
-            await asyncio.sleep(3600)
+            time.sleep(3600)
             return False
 
         return True

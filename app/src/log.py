@@ -24,3 +24,5 @@ class Log:
 
         # 关闭 Telethon 的频道更新 INFO 日志，只显示 WARNING 及以上级别
         logging.getLogger("telethon").setLevel(logging.WARNING)
+        # 关闭 APScheduler 的 INFO 日志，只显示 WARNING 及以上级别
+        logging.getLogger("apscheduler").setLevel(logging.WARNING)

@@ -1,27 +1,30 @@
 from typing import List, Dict, Any
 import logging
 import sys
+from telethon import TelegramClient
 
 DATA_PATH = "/app/data/"
 logger = logging.getLogger(__name__)
 
 
-class TelegramClient:
-    async def __init__(self, config: Dict[str, Any]):
+class ClientManage:
+    def __init__(self, config: Dict[str, Any]):
+        self.client = None
         self.config = config
+
+    async def init_client(self):
         telegram_config = self.config.get("telegram", {})
         api_id = telegram_config.get("api_id")
         api_hash = telegram_config.get("api_hash")
-        session_name = telegram_config.get("username", "telegram.session")
 
         # 显示配置信息
         logger.info(f"🔑 API_ID: {api_id}")
-        logger.info(f"👤 用户名: {session_name}")
+        logger.info(f"🔑 API_HASH: {api_hash}")
 
         try:
             # 创建客户端
             self.client = TelegramClient(
-                DATA_PATH + session_name + ".session",
+                DATA_PATH + "telegram.session",
                 api_id,
                 api_hash,
                 proxy=self.get_proxy(),

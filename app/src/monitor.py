@@ -1,7 +1,7 @@
 from telethon import events
 import logging
 from typing import Dict, Any
-from client import TelegramClient
+from . import client
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ class TelegramMonitor:
     def __init__(self, config: Dict[str, Any]):
         self.config = config
 
-    async def start(self, client: TelegramClient):
+    async def start(self, client_manage: client.ClientManage):
         """开始监控"""
         # 检查是否有启用的源和目标
         enabled_sources = [
@@ -22,14 +22,14 @@ class TelegramMonitor:
             d for d in self.config.get("destinations", []) if d.get("enabled", False)
         ]
         if not enabled_sources and not enabled_destinations:
-            logger.error("❌ 没有启用的来源和目标，转发功能无法启动")
+            logger.warning("⚠️ 没有启用的来源和目标，关闭转发功能")
             return
 
         # 获取源实体
         sources = self.config.get("sources", [])
         enabled_sources = [s for s in sources if s.get("enabled", False)]
         logger.info(f"📡 配置的来源数量: {len(enabled_sources)}/{len(sources)}")
-        source_entities = await client.resolve_entities(enabled_sources)
+        source_entities = await client_manage.resolve_entities(enabled_sources)
         valid_sources = [s for s in source_entities if s["entity"] is not None]
 
         if not valid_sources:
@@ -54,7 +54,9 @@ class TelegramMonitor:
         logger.info(
             f"🎯 配置的目标数量: {len(enabled_destinations)}/{len(destinations)}"
         )
-        destination_entities = await client.resolve_entities(enabled_destinations)
+        destination_entities = await client_manage.resolve_entities(
+            enabled_destinations
+        )
         valid_destinations = [
             s for s in destination_entities if s["entity"] is not None
         ]
@@ -69,6 +71,8 @@ class TelegramMonitor:
             logger.info(f"   - {dest['name']} (ID: {dest['id']})")
 
         # 创建消息处理器
+        client = client_manage.client
+
         @client.on(events.NewMessage(chats=[s["entity"] for s in valid_sources]))
         async def handler(event):
             try:
@@ -97,7 +101,9 @@ class TelegramMonitor:
                     logger.info(f"🎯 [{source_name}] 匹配到消息: \n{message_text}")
 
                     # 转发消息到所有目标
-                    await client.forward_message(event, valid_destinations)
+                    await client_manage.client.forward_message(
+                        event, valid_destinations
+                    )
                 else:
                     logger.debug(f"[{source_name}] 消息不匹配关键词")
 
