@@ -21,7 +21,7 @@ class TelegramScheduler:
             s for s in self.config.get("schedulers", []) if s.get("enabled", False)
         ]
         if not enabled_schedulers:
-            logger.warning("⚠️ 没有启用的定时任务，关闭定时功能")
+            logger.warning("⚠️  没有启用的定时任务，关闭定时功能")
             return
 
         # 获取定时实体
@@ -30,7 +30,7 @@ class TelegramScheduler:
         try:
             valid_schedulers = await client_manage.resolve_entities(enabled_schedulers)
             if not valid_schedulers:
-                logger.error("❌ 没有有效定时实体，定时功能无法启动")
+                logger.error("❌  没有有效定时实体，定时功能无法启动")
                 return
 
             task_count = 0
@@ -46,12 +46,12 @@ class TelegramScheduler:
                     )
                     task_count += 1
                 except Exception as e:
-                    logger.error(f"❌ 新增定时失败 {scheduler['name']}: {e}")
+                    logger.error(f"❌  新增定时失败 {scheduler['name']}: {e}")
 
             self.scheduler.start()
-            logger.info(f"⏰ 定时任务已启动，共 {task_count} 个任务")
+            logger.info(f"⏰  定时任务已启动，共 {task_count} 个任务")
         except Exception as e:
-            logger.error(f"❌ 执行定时任务失败: {e}")
+            logger.error(f"❌  执行定时任务失败: {e}")
             if self.scheduler.running:
                 self.scheduler.shutdown()
 
@@ -66,9 +66,9 @@ class TelegramScheduler:
                 scheduler["entity"], scheduler["message"]
             )
             logger.info(
-                f"✅ 定时发送 [{scheduler['message']}] ⏩ [{scheduler['name']}] 成功"
+                f"✅  定时发送 [{scheduler['message']}] ⏩ [{scheduler['name']}] 成功"
             )
         except Exception as e:
             logger.error(
-                f"❌ 定时发送 [{scheduler['message']}] ⏩ [{scheduler['name']}] 失败: {e}"
+                f"❌  定时发送 [{scheduler['message']}] ⏩ [{scheduler['name']}] 失败: {e}"
             )

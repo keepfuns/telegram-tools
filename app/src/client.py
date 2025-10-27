@@ -18,8 +18,8 @@ class ClientManage:
         api_hash = telegram_config.get("api_hash")
 
         # 显示配置信息
-        logger.info(f"🔑 API_ID: {api_id}")
-        logger.info(f"🔑 API_HASH: {api_hash}")
+        logger.info(f"🔑  API_ID: {api_id}")
+        logger.info(f"🔑  API_HASH: {api_hash}")
 
         try:
             # 创建客户端
@@ -32,16 +32,16 @@ class ClientManage:
             # 启动客户端
             await self.client.start()
             me = await self.client.get_me()
-            logger.info(f"📶 连接成功: @{me.username} (ID: {me.id})")
+            logger.info(f"📶  连接成功: @{me.username} (ID: {me.id})")
         except Exception as e:
-            logger.error(f"❌ Telegram客户端初始化失败: {e}")
+            logger.error(f"❌  Telegram客户端初始化失败: {e}")
             sys.exit(1)
 
     def get_proxy(self):
         """获取代理设置 - 支持多种代理类型"""
         proxy_config = self.config.get("proxy", {})
         if not proxy_config.get("enable", False):
-            logger.info("🌐 使用代理: 否")
+            logger.info("🌐  使用代理: 否")
             return None
 
         proxy_type = proxy_config.get("type", "http").lower()
@@ -53,7 +53,7 @@ class ClientManage:
         # 支持的代理类型
         valid_types = ["http", "socks4", "socks5", "mtproto"]
         if proxy_type not in valid_types:
-            logger.warning(f"⚠️ 不支持的代理类型: {proxy_type}，使用默认的http代理")
+            logger.warning(f"⚠️  不支持的代理类型: {proxy_type}，使用默认的http代理")
             proxy_type = "http"
 
         proxy_dict = {
@@ -73,8 +73,8 @@ class ClientManage:
             if password:  # MTProto使用secret而不是password
                 proxy_dict["secret"] = password
 
-        logger.info(f"🌐 使用代理: {proxy_type}")
-        logger.info(f"🔌 代理地址: {host}:{port}")
+        logger.info(f"🌐  使用代理: {proxy_type}")
+        logger.info(f"🔌  代理地址: {host}:{port}")
         return proxy_dict
 
     async def resolve_entities(self, identifiers: List[str]) -> List[Any]:
@@ -98,9 +98,9 @@ class ClientManage:
                 identifier["name"] = entity_name
                 identifier["entity"] = entity
                 entities.append(identifier)
-                logger.debug(f"✅ 解析实体: {entity_name} (ID: {entity_id})")
+                logger.debug(f"✅  解析实体: {entity_name} (ID: {entity_id})")
             else:
-                logger.error(f"❌ 无法解析实体: {identifier['id']}")
+                logger.error(f"❌  无法解析实体: {identifier['id']}")
 
         return entities
 
@@ -159,4 +159,4 @@ class ClientManage:
                             message_text,
                         )
                 except Exception as e:
-                    logger.error(f"❌ 转发消息到 {dest['name']} 失败: {e}")
+                    logger.error(f"❌  转发消息到 {dest['name']} 失败: {e}")

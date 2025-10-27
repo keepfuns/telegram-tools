@@ -162,7 +162,7 @@ class ConfigManager:
             )
             sche_item.yaml_set_comment_before_after_key(
                 "cron",
-                before="指定时间",
+                before="指定时间（需加双引号）",
             )
             sche_item.yaml_set_comment_before_after_key(
                 "message",
@@ -178,7 +178,7 @@ class ConfigManager:
             with open(CONFIG_FILE, "w", encoding="utf-8") as f:
                 yaml.dump(default_config, f)
 
-            logger.info(f"📝 已创建带详细注释的默认配置文件: {CONFIG_FILE}")
+            logger.info(f"📝  已创建带详细注释的默认配置文件: {CONFIG_FILE}")
             logger.warning("⚠️  请编辑配置文件后重启")
             sys.exit(0)
 
@@ -186,16 +186,16 @@ class ConfigManager:
     def load_config() -> Dict[str, Any]:
         """加载配置文件（保留注释）"""
         if not os.path.exists(CONFIG_FILE):
-            logger.error(f"❌ 配置文件不存在: {CONFIG_FILE}")
+            logger.error(f"❌  配置文件不存在: {CONFIG_FILE}")
             sys.exit(1)
 
         try:
             with open(CONFIG_FILE, "r", encoding="utf-8") as f:
                 config = yaml.load(f)
-            logger.info(f"✅ 配置文件加载成功: {CONFIG_FILE}")
+            logger.info(f"✅  配置文件加载成功: {CONFIG_FILE}")
             return config
         except Exception as e:
-            logger.error(f"❌ 配置文件加载失败: {e}")
+            logger.error(f"❌  配置文件加载失败: {e}")
             sys.exit(1)
 
     @staticmethod
@@ -209,9 +209,9 @@ class ConfigManager:
 
             with open(CONFIG_FILE, "w", encoding="utf-8") as f:
                 yaml.dump(config, f)
-            logger.info(f"✅ 配置文件保存成功: {CONFIG_FILE}")
+            logger.info(f"✅  配置文件保存成功: {CONFIG_FILE}")
         except Exception as e:
-            logger.error(f"❌ 配置文件保存失败: {e}")
+            logger.error(f"❌  配置文件保存失败: {e}")
             raise
 
     @staticmethod
@@ -249,7 +249,7 @@ class ConfigManager:
             ConfigManager.save_config(config_to_save)
 
         except Exception as e:
-            logger.error(f"❌ 更新配置失败: {e}")
+            logger.error(f"❌  更新配置失败: {e}")
             raise
 
     @staticmethod
@@ -284,28 +284,28 @@ class ConfigManager:
 
         for section, fields in required_fields.items():
             if section not in config:
-                logger.error(f"❌ 配置缺少必需部分: {section}")
+                logger.error(f"❌  配置缺少必需部分: {section}")
                 return False
 
             for field in fields:
                 if field not in config[section]:
-                    logger.error(f"❌ 配置 {section} 缺少必需字段: {field}")
+                    logger.error(f"❌  配置 {section} 缺少必需字段: {field}")
                     return False
 
         api_id = config.get("telegram").get("api_id")
         if not api_id or api_id == "API_ID":
-            logger.error("❌ telegram配置中没有可用api_id")
+            logger.error("❌  telegram配置中没有可用api_id")
             return False
         api_hash = config.get("telegram").get("api_hash")
         if not api_hash or api_hash == "API_HASH":
-            logger.error("❌ telegram配置中没有可用api_hash")
+            logger.error("❌  telegram配置中没有可用api_hash")
             return False
 
         # 检查session文件
         if not os.path.exists(SESSION_FILE):
-            logger.error(f"❌ Session文件不存在: {SESSION_FILE}")
+            logger.error(f"❌  Session文件不存在: {SESSION_FILE}")
             logger.warning(
-                "⚠️ 请终端运行 docker exec -it telegram-tools python /app/src/login.py 生成Session文件"
+                "⚠️  请终端运行 docker exec -it telegram-tools python /app/src/login.py 生成Session文件"
             )
             time.sleep(3600)
             return False

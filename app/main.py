@@ -8,7 +8,7 @@ async def app():
     log.Log("INFO")
 
     logger = logging.getLogger(__name__)
-    logger.info("🚀 启动Telegram-Tools系统...")
+    logger.info("🚀  启动Telegram-Tools系统 V1.0.0")
 
     config_manager = conf.ConfigManager()
     # 创建默认配置文件（如果不存在）
@@ -35,13 +35,13 @@ async def app():
 
             await client_manage.client.run_until_disconnected()
         except Exception as e:
-            logger.error(f"❌ 程序运行出错: {e}")
+            logger.error(f"❌  程序运行出错: {e}")
         finally:
             if client_manage and client_manage.client.is_connected():
                 await client_manage.client.disconnect()
             if telegram_scheduler and telegram_scheduler.scheduler.running:
                 telegram_scheduler.scheduler.shutdown()
-            logger.info("⏹️ Telegram-Tools系统已停止")
+            logger.info("⏹️  Telegram-Tools系统已停止")
 
 
 if __name__ == "__main__":

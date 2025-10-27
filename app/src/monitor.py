@@ -22,22 +22,22 @@ class TelegramMonitor:
             d for d in self.config.get("destinations", []) if d.get("enabled", False)
         ]
         if not enabled_sources and not enabled_destinations:
-            logger.warning("⚠️ 没有启用的来源和目标，关闭转发功能")
+            logger.warning("⚠️  没有启用的来源和目标，关闭转发功能")
             return
 
         # 获取源实体
         sources = self.config.get("sources", [])
         enabled_sources = [s for s in sources if s.get("enabled", False)]
-        logger.info(f"📡 来源数量: {len(enabled_sources)}/{len(sources)}")
+        logger.info(f"📡  来源数量: {len(enabled_sources)}/{len(sources)}")
         source_entities = await client_manage.resolve_entities(enabled_sources)
         valid_sources = [s for s in source_entities if s["entity"] is not None]
 
         if not valid_sources:
-            logger.error("❌ 没有有效来源实体，转发功能无法启动")
+            logger.error("❌  没有有效来源实体，转发功能无法启动")
             return
 
         # 显示监控配置
-        logger.info(f"📡 开始监控 {len(valid_sources)} 个来源")
+        logger.info(f"📡  开始监控 {len(valid_sources)} 个来源")
         for source in valid_sources:
             source_config = next(
                 (s for s in enabled_sources if s["id"] == source["id"]), {}
@@ -45,13 +45,13 @@ class TelegramMonitor:
             include_keywords = source_config.get("include_keywords", [])
             exclude_keywords = source_config.get("exclude_keywords", [])
             logger.info(
-                f"   - {source['name']} (ID: {source['id']}, 包含: {include_keywords}, 排除: {exclude_keywords})"
+                f"    - {source['name']} (ID: {source['id']}, 包含: {include_keywords}, 排除: {exclude_keywords})"
             )
 
         # 获取目标实体
         destinations = self.config.get("destinations", [])
         enabled_destinations = [d for d in destinations if d.get("enabled", False)]
-        logger.info(f"🎯 目标数量: {len(enabled_destinations)}/{len(destinations)}")
+        logger.info(f"🎯  目标数量: {len(enabled_destinations)}/{len(destinations)}")
         destination_entities = await client_manage.resolve_entities(
             enabled_destinations
         )
@@ -60,13 +60,13 @@ class TelegramMonitor:
         ]
 
         if not valid_destinations:
-            logger.error("❌ 没有有效的目标实体，转发功能无法启动")
+            logger.error("❌  没有有效的目标实体，转发功能无法启动")
             return
 
         # 显示目标配置
-        logger.info(f"🎯 开始转发 {len(valid_destinations)} 个目标")
+        logger.info(f"🎯  开始转发 {len(valid_destinations)} 个目标")
         for dest in valid_destinations:
-            logger.info(f"   - {dest['name']} (ID: {dest['id']})")
+            logger.info(f"    - {dest['name']} (ID: {dest['id']})")
 
         # 创建消息处理器
         @client_manage.client.on(
@@ -83,7 +83,7 @@ class TelegramMonitor:
                 message_text = event.message.text or event.message.raw_text or ""
 
                 # 记录消息信息
-                logger.debug(f"收到消息 [{source_name}]: \n{message_text}")
+                logger.debug(f"👀  收到消息 [{source_name}]: \n{message_text}")
 
                 # 查找对应的源配置
                 source_config = next(
@@ -92,25 +92,23 @@ class TelegramMonitor:
                 )
                 if not source_config:
                     logger.warning(
-                        f"⚠️ 收到未知源的消息: {source_name} (ID: {source_id})"
+                        f"⚠️  收到未知源的消息: {source_name} (ID: {source_id})"
                     )
                     return
 
                 # 应用关键词过滤（只对文本内容过滤）
                 if self.message_filter(message_text, source_config):
-                    logger.info(f"🎯 [{source_name}] 匹配到消息: \n{message_text}")
+                    logger.info(f"🎯  [{source_name}] 匹配到消息: \n{message_text}")
 
                     # 转发消息到所有目标
-                    await client_manage.client.forward_message(
-                        event, valid_destinations
-                    )
+                    await client_manage.forward_message(event, valid_destinations)
                 else:
-                    logger.debug(f"❗ [{source_name}] 消息关键词不匹配")
+                    logger.debug(f"❗  [{source_name}] 消息关键词不匹配")
 
             except Exception as e:
-                logger.error(f"❌ 处理消息时出错: {e}")
+                logger.error(f"❌  处理消息时出错: {e}")
 
-        logger.info("🔍 实时监控转发已启动，等待新消息...")
+        logger.info("🔍  实时监控转发已启动，等待新消息...")
 
     def message_filter(self, text: str, source_config: Dict[str, Any]) -> bool:
         """消息过滤"""
