@@ -18,7 +18,6 @@
    - 登录你的 `Telegram` 账号
    - 进入 `API Development Tools`
    - 创建新的应用程序，获取 `api_id` 和 `api_hash`
-   - `+86` 手机号代申请api请联系 [拾光者](https://t.me/KeepfunsChatBot)
 
 2️⃣ **Docker运行**：
    ```bash
@@ -108,6 +107,9 @@
 ## 免责声明
 - 本项目完全免费，仅限个人学习、研究和非商业用途
 - 本项目开发者不对因使用本项目而可能导致的任何直接或间接后果负责
+
+## 咨询反馈
+   [拾光者](https://t.me/KeepfunsChatBot)
 
 ## 赞赏
 - 如果您欣赏本项目，欢迎为它点亮一颗⭐️
