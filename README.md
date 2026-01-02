@@ -109,7 +109,7 @@
 - 本项目开发者不对因使用本项目而可能导致的任何直接或间接后果负责
 
 ## 咨询反馈
-   [拾光者](https://t.me/KeepfunsChatBot)
+   [lulu](https://t.me/luluprivatechatbot)
 
 ## 赞赏
 - 如果您欣赏本项目，欢迎为它点亮一颗⭐️
