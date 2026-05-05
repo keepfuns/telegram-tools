@@ -2,8 +2,13 @@ from telethon import events
 import logging
 from typing import Dict, Any
 from . import client
+import os
+import re
+import shutil
 
 logger = logging.getLogger(__name__)
+temp_filepath = "/app/temp"
+download_filepath = "/app/downloads"
 
 
 class TelegramMonitor:
@@ -99,6 +104,40 @@ class TelegramMonitor:
                 # 应用关键词过滤（只对文本内容过滤）
                 if self.message_filter(message_text, source_config):
                     logger.info(f"🎯  [{source_name}] 匹配到消息: \n{message_text}")
+
+                    # ---------------- 新增：音频下载逻辑开始 ----------------
+                    # 判断消息中是否包含音频文件 (Telethon中通常用 event.message.audio 或 event.message.file)
+                    if source_name == "music_v1bot" and (
+                        event.message.audio
+                        or (
+                            event.message.file
+                            and event.message.file.mime_type
+                            and event.message.file.mime_type.startswith("audio/")
+                        )
+                    ):
+                        original_filename = ""
+                        match = re.search(r"歌曲：(.+)", message_text)
+                        if match:
+                            original_filename = f"{match.group(1).strip()}.flac"
+                        else:
+                            return
+
+                        # 先下载到临时目录
+                        os.makedirs(temp_filepath, exist_ok=True)
+                        temp_save_path = os.path.join(temp_filepath, original_filename)
+                        logger.info(
+                            f"🎵 检测到[{source_name}]音频，下载至临时目录: {temp_save_path}"
+                        )
+                        await event.message.download_media(file=temp_save_path)
+
+                        # 移动到最终下载目录
+                        os.makedirs(download_filepath, exist_ok=True)
+                        final_path = os.path.join(download_filepath, original_filename)
+                        shutil.move(temp_save_path, final_path)
+
+                        logger.info(f"✅ [{source_name}]音频下载成功: {final_path}")
+                        return
+                    # ---------------- 新增：音频下载逻辑结束 ----------------
 
                     # 转发消息到所有目标
                     await client_manage.forward_message(event, valid_destinations)
